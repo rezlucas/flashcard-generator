@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Geracao {
+  id            String      @id @default(cuid())
+  conteudoBruto String
+  tipo          String
+  materia       String?
+  criadoEm      DateTime    @default(now())
+  flashcards    Flashcard[]
+}
+
+model Flashcard {
+  id        String  @id @default(cuid())
+  frente    String
+  verso     String
+  tags      String
+  tipoCard  String  @default("basico")
+  geracaoId String
+  geracao   Geracao @relation(fields: [geracaoId], references: [id], onDelete: Cascade)
+}
