@@ -29,31 +29,49 @@ function HomeContent() {
   const [tipo, setTipo] = useState(searchParams.get("tipo") ?? "conceito");
   const [materia, setMateria] = useState("Auto-detectar");
   const [tiposCard, setTiposCard] = useState(["basico", "digitar", "cloze", "invertido"]);
+  const [frente, setFrente] = useState("");
+  const [verso, setVerso] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<GeracaoResult | null>(null);
 
   const gerar = useCallback(async () => {
-    if (!conteudo.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/gerar-flashcards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ conteudo, tipo, materia, tiposCard }),
-      });
+      let res: Response;
+
+      if (tipo === "colorir") {
+        if (!frente.trim() || !verso.trim()) return;
+        res = await fetch("/api/colorir-flashcard", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ frente, verso, materia }),
+        });
+      } else {
+        if (!conteudo.trim()) return;
+        res = await fetch("/api/gerar-flashcards", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ conteudo, tipo, materia, tiposCard }),
+        });
+      }
+
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Erro desconhecido");
       }
       const dados: GeracaoResult = await res.json();
       setResultado(dados);
-      toast.success(`${dados.flashcards.length} flashcard(s) gerado(s)!`);
+      toast.success(
+        tipo === "colorir"
+          ? "Cores aplicadas com sucesso!"
+          : `${dados.flashcards.length} flashcard(s) gerado(s)!`
+      );
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erro ao gerar flashcards");
+      toast.error(e instanceof Error ? e.message : "Erro ao processar");
     } finally {
       setLoading(false);
     }
-  }, [conteudo, tipo, materia, tiposCard]);
+  }, [conteudo, tipo, materia, tiposCard, frente, verso]);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -123,6 +141,10 @@ function HomeContent() {
               setMateria={setMateria}
               tiposCard={tiposCard}
               setTiposCard={setTiposCard}
+              frente={frente}
+              setFrente={setFrente}
+              verso={verso}
+              setVerso={setVerso}
               onGerar={gerar}
               loading={loading}
             />
@@ -137,7 +159,7 @@ function HomeContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="font-semibold text-lg text-zinc-100">
-                      {resultado.materia ?? "Flashcards gerados"}
+                      {resultado.materia ?? (tipo === "colorir" ? "Card colorido" : "Flashcards gerados")}
                     </h2>
                     <p className="text-sm text-zinc-400">
                       {resultado.flashcards.length} flashcard(s) · pressione 1–9 para copiar TSV
@@ -160,7 +182,7 @@ function HomeContent() {
                 <ImportInstructions />
               </>
             ) : (
-              <EmptyState />
+              <EmptyState tipo={tipo} />
             )}
           </section>
         </main>
@@ -169,13 +191,19 @@ function HomeContent() {
   );
 }
 
-function EmptyState() {
+function EmptyState({ tipo }: { tipo: string }) {
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center gap-3 text-zinc-500">
-      <div className="text-5xl">🎴</div>
-      <p className="text-base font-medium text-zinc-300">Cole um conceito ou questão errada</p>
+      <div className="text-5xl">{tipo === "colorir" ? "🎨" : "🎴"}</div>
+      <p className="text-base font-medium text-zinc-300">
+        {tipo === "colorir"
+          ? "Cole a frente e o verso do seu card"
+          : "Cole um conceito ou tema"}
+      </p>
       <p className="text-sm">
-        Os flashcards aparecerão aqui com cores mnemônicas prontas para o Anki.
+        {tipo === "colorir"
+          ? "O sistema aplica as cores mnemônicas mantendo o conteúdo original."
+          : "Os flashcards aparecerão aqui com cores mnemônicas prontas para o Anki."}
       </p>
     </div>
   );
