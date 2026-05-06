@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Flashcards para Anki — Concursos Públicos",
   description: "Gere flashcards com IA e paleta mnemônica para o Anki",
+  icons: {
+    icon: "/images/fg-favicon.png",
+  },
 };
 
 export default function RootLayout({

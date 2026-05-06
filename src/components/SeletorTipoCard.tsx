@@ -54,7 +54,7 @@ export function SeletorTipoCard({ selecionados, onChange }: SeletorTipoCardProps
               key={id}
               type="button"
               onClick={() => toggle(id)}
-              className={`flex items-start gap-2 rounded-lg border p-2.5 text-left transition-colors ${
+              className={`flex items-start gap-2 rounded-lg border p-2.5 text-left transition-colors cursor-pointer ${
                 ativo
                   ? "border-primary bg-primary/10"
                   : "border-border bg-transparent hover:bg-muted/50"
