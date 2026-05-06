@@ -8,6 +8,8 @@ export const PROMPT_COLORIR = `Você é um especialista em design instrucional p
 
 ## Paleta semântica (style inline obrigatório)
 
+Use TODAS as cores abaixo de forma semântica — cada cor tem um significado fixo.
+
 - Palavra-chave / conceito central (amarelo manteiga):
   <span style="background-color:#FFF6B8;color:#6B5408;padding:2px 6px;border-radius:4px;font-weight:600">TEXTO</span>
 
@@ -25,6 +27,21 @@ export const PROMPT_COLORIR = `Você é um especialista em design instrucional p
 
 - Mnemônico / macete (pêssego):
   <span style="background-color:#FFD3B8;color:#9A3412;padding:2px 6px;border-radius:4px;font-style:italic">TEXTO</span>
+
+- Exemplo / caso concreto / ilustração (verde lima):
+  <span style="background-color:#D0F0A0;color:#2A5800;padding:2px 6px;border-radius:4px">TEXTO</span>
+
+- Jurisprudência / súmula / enunciado (âmbar):
+  <span style="background-color:#FFE070;color:#6B4000;padding:2px 6px;border-radius:4px;font-weight:600">TEXTO</span>
+
+- Vedado / proibido / não permitido (coral):
+  <span style="background-color:#FFAA90;color:#8B2000;padding:2px 6px;border-radius:4px;font-weight:600">TEXTO</span>
+
+- Procedimento / etapa / passo a passo (teal):
+  <span style="background-color:#A8E8E0;color:#0A5652;padding:2px 6px;border-radius:4px">TEXTO</span>
+
+- Comparação / contraposição / diferença (magenta claro):
+  <span style="background-color:#FFB8DC;color:#8B0050;padding:2px 6px;border-radius:4px">TEXTO</span>
 
 ## Formato de saída (OBRIGATÓRIO)
 Retorne APENAS um JSON válido, sem markdown, sem explicação:
