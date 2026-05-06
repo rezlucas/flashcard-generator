@@ -42,16 +42,27 @@ function SafeHTML({ html }: { html: string }) {
   return <div ref={ref} className="text-sm leading-relaxed" />;
 }
 
+const CLOZE_CORES = [
+  "background-color:#E0CFFF;color:#5B21B6;border:1px dashed #5B21B6",
+  "background-color:#C9DEFF;color:#1E3A8A;border:1px dashed #1E3A8A",
+  "background-color:#C5EBC9;color:#166534;border:1px dashed #166534",
+  "background-color:#FFC8C8;color:#8B1A1A;border:1px dashed #8B1A1A",
+  "background-color:#FFD3B8;color:#9A3412;border:1px dashed #9A3412",
+  "background-color:#FFF6B8;color:#6B5408;border:1px dashed #6B5408",
+];
+
 function ClozePreview({ html }: { html: string }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!ref.current) return;
     import("dompurify").then((mod) => {
       const DOMPurify = mod.default;
-      // Substitui {{c1::texto}} por span destacado para visualização
       const comDestaque = html.replace(
         /\{\{c(\d+)::([^}]+)\}\}/g,
-        '<span style="background-color:#E0CFFF;color:#5B21B6;padding:1px 5px;border-radius:4px;font-weight:700;border:1px dashed #5B21B6">[c$1: $2]</span>'
+        (_, num, texto) => {
+          const cor = CLOZE_CORES[(parseInt(num) - 1) % CLOZE_CORES.length];
+          return `<span style="${cor};padding:1px 6px;border-radius:4px;font-weight:700">[c${num}: ${texto}]</span>`;
+        }
       );
       if (ref.current) {
         ref.current.innerHTML = DOMPurify.sanitize(comDestaque, {

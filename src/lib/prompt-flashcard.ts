@@ -20,8 +20,17 @@ Card simples e direto. O estudante digita a resposta. **Sem HTML decorativo, sem
 - Verso: resposta em 1 a 5 palavras, no máximo
 
 ### "cloze" — Omissão de palavras
-O campo "frente" contém o texto com lacunas no formato Anki: {{c1::palavra}}. Múltiplas lacunas usam c1, c2, c3 etc. Use HTML com cores semânticas no texto ao redor das lacunas. O campo "verso" contém contexto/fundamento adicional (pode ser vazio "").
-- Exemplo: "O <span style=\\"...\\">habeas data</span> tem prazo de {{c1::10 dias}} para resposta da autoridade."
+O campo "frente" contém texto com lacunas no formato Anki: {{c1::palavra}}, {{c2::palavra}}, {{c3::palavra}} etc.
+
+**Regras para cloze:**
+1. **Múltiplas lacunas no mesmo card**: use c1, c2, c3... para omitir várias palavras-chave num mesmo texto. Cada c-número vira um card separado no Anki — o estudante vê o texto completo com apenas aquela lacuna oculta de cada vez.
+2. **Mínimo 2 lacunas por card cloze**: nunca gere cloze com apenas {{c1::}}. Aproveite o texto para cobrir múltiplos conceitos.
+3. **Gere múltiplos cards cloze**: para um conteúdo rico, gere 2 a 4 cards cloze com textos diferentes cobrindo aspectos distintos.
+4. Use HTML com cores semânticas no texto ao redor das lacunas (nunca dentro das lacunas).
+5. O campo "verso" contém fundamento/contexto adicional (pode ser "").
+
+- Exemplo com 3 lacunas: "O {{c1::habeas data}} garante acesso a {{c2::informações pessoais}} em poder do Estado, com prazo de {{c3::10 dias}} para resposta."
+- Exemplo com cores: "A <span style=\\"background-color:#C9DEFF;color:#1E3A8A;padding:2px 6px;border-radius:4px\\">pena</span> de {{c1::reclusão}} é aplicada a crimes {{c2::mais graves}}, enquanto a {{c3::detenção}} é para crimes {{c4::menos graves}}."
 
 ### "invertido" — Básico (cartão invertido opcional)
 Gera o card na ordem normal E automaticamente um card invertido no Anki. Ideal para pares: termo↔definição, instituto↔conceito. Use HTML rico com cores semânticas.
