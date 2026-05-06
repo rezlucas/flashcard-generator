@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { groq } from "@/lib/groq";
+import { getGroq } from "@/lib/groq";
 import { prisma } from "@/lib/prisma";
 import { PROMPT_SISTEMA, buildUserMessage } from "@/lib/prompt-flashcard";
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const tiposAtivos: string[] = tiposCard?.length ? tiposCard : ["basico"];
 
-    const resposta = await groq.chat.completions.create({
+    const resposta = await getGroq().chat.completions.create({
       model: "llama-3.3-70b-versatile",
       temperature: 0.3,
       messages: [
