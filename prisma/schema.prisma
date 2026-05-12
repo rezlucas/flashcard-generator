@@ -25,3 +25,46 @@ model Flashcard {
   geracaoId String
   geracao   Geracao @relation(fields: [geracaoId], references: [id], onDelete: Cascade)
 }
+
+// ── Revisão 24/7/30 ────────────────────────────────────────
+
+model Materia {
+  id        String            @id @default(cuid())
+  nome      String
+  paiId     String?
+  pai       Materia?          @relation("Hierarquia", fields: [paiId], references: [id])
+  filhas    Materia[]         @relation("Hierarquia")
+  cor       String            @default("#6366f1")
+  ativa     Boolean           @default(true)
+  criadaEm  DateTime          @default(now())
+  sessoes   Sessao[]
+  revisoes  RevisaoAgendada[]
+}
+
+model Sessao {
+  id                    String            @id @default(cuid())
+  materiaId             String
+  materia               Materia           @relation(fields: [materiaId], references: [id])
+  data                  DateTime
+  duracaoMin            Int
+  tipo                  String
+  observacoes           String?
+  sessaoOrigemId        String?
+  criadaEm              DateTime          @default(now())
+  revisoesAgendadas     RevisaoAgendada[] @relation("SessaoOrigem")
+  revisoesConcluidasPor RevisaoAgendada[] @relation("SessaoConclusao")
+}
+
+model RevisaoAgendada {
+  id                String    @id @default(cuid())
+  materiaId         String
+  materia           Materia   @relation(fields: [materiaId], references: [id])
+  sessaoOrigemId    String
+  sessaoOrigem      Sessao    @relation("SessaoOrigem", fields: [sessaoOrigemId], references: [id])
+  dataAlvo          DateTime
+  tipo              String
+  status            String    @default("Pendente")
+  concluidaEm       DateTime?
+  sessaoConcluidaId String?
+  sessaoConcluida   Sessao?   @relation("SessaoConclusao", fields: [sessaoConcluidaId], references: [id])
+}

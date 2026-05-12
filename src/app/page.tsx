@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Toaster, toast } from "sonner";
-import { History, Download, RotateCcw } from "lucide-react";
+import { History, Download, RotateCcw, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EntradaConteudo } from "@/components/EntradaConteudo";
 import { FlashcardPreview, type FlashcardData } from "@/components/FlashcardPreview";
@@ -122,12 +122,20 @@ function HomeContent() {
               Concursos Públicos · IA + paleta mnemônica
             </p>
           </div>
-          <Link href="/historico">
-            <Button variant="ghost" size="sm">
-              <History className="h-4 w-4 mr-2" />
-              Histórico
-            </Button>
-          </Link>
+          <div className="flex items-center gap-1">
+            <Link href="/historico">
+              <Button variant="ghost" size="sm">
+                <History className="h-4 w-4 mr-2" />
+                Histórico
+              </Button>
+            </Link>
+            <Link href="/revisao">
+              <Button variant="ghost" size="sm">
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Revisão 24/7/30
+              </Button>
+            </Link>
+          </div>
         </header>
 
         <main className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-[440px_1fr] gap-6">
