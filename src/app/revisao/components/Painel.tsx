@@ -141,8 +141,9 @@ export function Painel({ materias, refreshKey, onMarcarFeito }: Props) {
     );
   }
 
+  const futuras = data.futuras ?? [];
   const totalPendente = data.hoje.length + data.atrasadas.length;
-  const todasPendentes = [...data.atrasadas, ...data.hoje, ...data.futuras];
+  const todasPendentes = [...data.atrasadas, ...data.hoje, ...futuras];
 
   return (
     <div className="flex flex-col gap-5">
@@ -159,7 +160,7 @@ export function Painel({ materias, refreshKey, onMarcarFeito }: Props) {
           <div className="text-xs text-zinc-500 mt-1">Atrasadas</div>
         </div>
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-zinc-100">{data.futuras.length}</div>
+          <div className="text-2xl font-bold text-zinc-100">{futuras.length}</div>
           <div className="text-xs text-zinc-500 mt-1">Agendadas</div>
         </div>
       </div>
