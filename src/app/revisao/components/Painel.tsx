@@ -141,7 +141,8 @@ export function Painel({ materias, refreshKey, onMarcarFeito }: Props) {
     );
   }
 
-  const futuras = data.futuras ?? [];
+  // fallback para proximas enquanto Apps Script não for reimplantado com o campo futuras
+  const futuras = data.futuras ?? data.proximas ?? [];
   const totalPendente = data.hoje.length + data.atrasadas.length;
   const todasPendentes = [...data.atrasadas, ...data.hoje, ...futuras];
 
